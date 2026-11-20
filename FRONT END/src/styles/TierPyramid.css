@@ -1,0 +1,397 @@
+
+/* =====================================
+   THREE-LEVEL TIER PYRAMID LAYOUT
+===================================== */
+
+.tier-pyramid-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr 1fr;
+  grid-template-rows: repeat(3, minmax(160px, auto));
+  align-items: center;
+  gap: 20px;
+  margin-top: 55px;
+}
+
+.tier-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 100%;
+}
+
+.tier-side-left {
+  grid-column: 1;
+  grid-row: 1 / 4;
+  justify-content: center;
+}
+
+.tier-side-left .tier-description {
+  margin-top: 15px;
+}
+
+.tier-side-right {
+  grid-column: 3;
+  grid-row: 1 / 4;
+  justify-content: space-around;
+  gap: 25px;
+}
+
+/* =====================================
+   CENTRAL PYRAMID
+===================================== */
+
+.pyramid-container {
+  grid-column: 2;
+  grid-row: 1 / 4;
+
+  width: 100%;
+  max-width: 440px;
+  height: 480px;
+
+  margin: auto;
+  padding: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 0;
+  position: relative;
+  overflow: visible;
+}
+
+/* COMMON PYRAMID LEVEL */
+
+.pyramid-tier {
+  width: 100%;
+  flex-shrink: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+  isolation: isolate;
+
+  color: white;
+  font-weight: 700;
+  cursor: default;
+
+  transition: filter .3s ease;
+}
+
+.pyramid-tier:hover {
+  filter: brightness(1.15);
+}
+
+.pyramid-tier span {
+  font-size: clamp(30px, 4vw, 43px);
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: 0 3px 8px rgba(0,0,0,.3);
+}
+
+.pyramid-tier small {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-top: 9px;
+  opacity: .9;
+}
+
+/* =====================================
+   LEVEL 01 - BASIC
+===================================== */
+
+.pyramid-basic {
+  height: 145px;
+
+  background: linear-gradient(
+    145deg,
+    #193D75,
+    #071F49
+  );
+
+  clip-path: polygon(
+    50% 0%,
+    65.76% 100%,
+    34.24% 100%
+  );
+
+  padding-top: 20px;
+}
+
+/* =====================================
+   LEVEL 02 - ADVANCED
+===================================== */
+
+.pyramid-advanced {
+  height: 155px;
+
+  background: linear-gradient(
+    135deg,
+    #8054A5,
+    #A98ACB
+  );
+
+  clip-path: polygon(
+    34.24% 0%,
+    65.76% 0%,
+    82.61% 100%,
+    17.39% 100%
+  );
+}
+
+/* =====================================
+   LEVEL 03 - HARD
+===================================== */
+
+.pyramid-hard {
+  height: 160px;
+
+  background: linear-gradient(
+    120deg,
+    #8054A5,
+    #B99DDE
+  );
+
+  clip-path: polygon(
+    17.39% 0%,
+    82.61% 0%,
+    100% 100%,
+    0% 100%
+  );
+}
+
+/* =====================================
+   SIDE DESCRIPTIONS
+===================================== */
+
+.tier-description {
+  position: relative;
+  padding: 17px 20px;
+
+  background: rgba(16,20,38,.7);
+  border-left: 4px solid var(--tier-color);
+  border-radius: 0 6px 6px 0;
+}
+
+.tier-description-basic {
+  --tier-color: #5277B0;
+}
+
+.tier-description-advanced {
+  --tier-color: #8054A5;
+}
+
+.tier-description-hard {
+  --tier-color: #A98ACB;
+}
+
+.tier-description h3 {
+  font-size: 23px;
+  color: var(--tier-color);
+  margin-bottom: 12px;
+}
+
+.tier-description p {
+  font-size: 13px;
+  line-height: 1.8;
+  color: #B7B8C8;
+}
+
+.tier-description-number {
+  display: inline-block;
+  font-size: 11px;
+  color: #888;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.tier-description ul {
+  padding-left: 18px;
+  margin-top: 14px;
+}
+
+.tier-description li {
+  font-size: 12px;
+  color: #B7B8C8;
+  line-height: 1.9;
+}
+
+.tier-explore {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 15px;
+
+  color: var(--tier-color);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* =====================================
+   HOME PAGE PREVIEW
+===================================== */
+
+.tiers-preview .tier-pyramid-layout {
+  margin-bottom: 40px;
+}
+
+/* =====================================
+   DETAILED TIERS PAGE
+===================================== */
+
+.tier-pyramid-detailed {
+  margin-top: 35px;
+}
+
+/* =====================================
+   TABLET RESPONSIVENESS
+===================================== */
+
+@media (max-width: 900px) {
+
+  .tier-pyramid-layout {
+    grid-template-columns: 1fr 1.1fr;
+    grid-template-rows: auto;
+    gap: 20px;
+  }
+
+  .pyramid-container {
+    grid-column: 1 / 3;
+    grid-row: 1;
+
+    height: 420px;
+    max-width: 400px;
+    width: 100%;
+    margin: auto;
+  }
+
+  .tier-side-left {
+    grid-column: 1 / 3;
+    grid-row: 2;
+  }
+
+  .tier-side-right {
+    grid-column: 1 / 3;
+    grid-row: 3;
+    gap: 15px;
+  }
+
+  .tier-description {
+    width: 100%;
+  }
+}
+
+/* =====================================
+   MOBILE RESPONSIVENESS
+===================================== */
+
+@media (max-width: 600px) {
+
+  .tier-pyramid-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+    margin-top: 30px;
+  }
+
+  .pyramid-container {
+    order: 0;
+
+    width: 100%;
+    max-width: 350px;
+    height: 350px;
+
+    gap: 0;
+    padding: 0;
+  }
+
+  .tier-side {
+    display: contents;
+  }
+
+  .tier-description {
+    width: 100%;
+    padding: 18px;
+  }
+
+  .tier-description-basic {
+    order: 1;
+  }
+
+  .tier-description-advanced {
+    order: 2;
+  }
+
+  .tier-description-hard {
+    order: 3;
+  }
+
+  .pyramid-basic {
+    height: 110px;
+    padding-top: 15px;
+  }
+
+  .pyramid-advanced {
+    height: 120px;
+  }
+
+  .pyramid-hard {
+    height: 120px;
+  }
+
+  .pyramid-tier span {
+    font-size: 30px;
+  }
+
+  .pyramid-tier small {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    margin-top: 7px;
+  }
+
+  .tier-description h3 {
+    font-size: 20px;
+  }
+
+  .tier-description p {
+    font-size: 13px;
+  }
+}
+
+/* =====================================
+   SMALL MOBILE
+===================================== */
+
+@media (max-width: 380px) {
+
+  .pyramid-container {
+    max-width: 310px;
+    height: 310px;
+  }
+
+  .pyramid-basic {
+    height: 95px;
+  }
+
+  .pyramid-advanced {
+    height: 105px;
+  }
+
+  .pyramid-hard {
+    height: 110px;
+  }
+
+  .pyramid-tier span {
+    font-size: 26px;
+  }
+
+  .pyramid-tier small {
+    font-size: 8px;
+  }
+}

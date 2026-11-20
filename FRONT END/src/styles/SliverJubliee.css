@@ -1,0 +1,144 @@
+
+.silver-jubilee-section {
+  position: relative;
+  overflow: hidden;
+  padding: 100px 24px;
+  background:
+    radial-gradient(ellipse at 15% 50%, rgba(7, 31, 73, .35), transparent 50%),
+    radial-gradient(ellipse at 85% 50%, rgba(128, 84, 165, .16), transparent 50%),
+    #080808;
+  border-top: 1px solid rgba(169, 138, 203, .12);
+  border-bottom: 1px solid rgba(169, 138, 203, .12);
+}
+
+.silver-jubilee-container {
+  width: min(100%, 1200px);
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  align-items: center;
+  gap: 90px;
+}
+
+/* Silver Jubilee Image */
+.jubilee-image-wrapper {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(169, 138, 203, .25);
+  border-radius: 8px;
+  background: #080808;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, .25);
+}
+
+.jubilee-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Right Content */
+.jubilee-content {
+  max-width: 550px;
+}
+
+.jubilee-label {
+  display: inline-block;
+  color: #b99dde;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+}
+
+.jubilee-content h2 {
+  color: #fff;
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 1.15;
+  letter-spacing: -1.8px;
+  margin: 0 0 24px;
+}
+
+.jubilee-content h2 span {
+  display: block;
+  color: #a98acb;
+}
+
+.jubilee-content p {
+  color: #a9a6b2;
+  font-size: 14px;
+  line-height: 1.9;
+  margin-bottom: 17px;
+}
+
+.jubilee-footer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(169, 138, 203, .2);
+  color: #c7b3dc;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.jubilee-separator {
+  color: #8054a5;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .silver-jubilee-section {
+    padding: 75px 24px;
+  }
+
+  .silver-jubilee-container {
+    grid-template-columns: 1fr;
+    gap: 45px;
+    max-width: 650px;
+  }
+
+  .jubilee-image-wrapper {
+    width: 100%;
+  }
+
+  .jubilee-content {
+    max-width: 100%;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .silver-jubilee-section {
+    padding: 55px 18px;
+  }
+
+  .silver-jubilee-container {
+    gap: 35px;
+  }
+
+  .jubilee-image-wrapper {
+    border-radius: 6px;
+  }
+
+  .jubilee-image {
+    width: 100%;
+    height: auto;
+  }
+
+  .jubilee-content h2 {
+    font-size: 34px;
+  }
+
+  .jubilee-content p {
+    font-size: 13px;
+  }
+
+  .jubilee-footer {
+    font-size: 9px;
+    gap: 8px;
+  }
+}

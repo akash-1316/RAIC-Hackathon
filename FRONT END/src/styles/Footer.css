@@ -1,0 +1,57 @@
+
+.footer-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  margin-bottom: 15px;
+}
+
+.footer-logo {
+  display: block;
+  object-fit: contain;
+}
+
+.silver-footer-logo {
+  width: 48px;
+  height: 48px;
+}
+
+.raic-footer-logo {
+  width: 84px;
+  height: 54px;
+  border-radius: 25%;
+}
+
+.footer-brand-divider {
+  color: #a98acb;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.footer-collaboration {
+  color: #9995a5;
+  font-size: 12px;
+  line-height: 1.6;
+  margin-top: 8px;
+}
+
+@media (max-width: 600px) {
+  .footer-brand {
+    gap: 9px;
+  }
+
+  .silver-footer-logo {
+    width: 42px;
+    height: 42px;
+  }
+
+  .raic-footer-logo {
+    width: 38px;
+    height: 38px;
+  }
+
+  .footer-brand-divider {
+    font-size: 21px;
+  }
+}
