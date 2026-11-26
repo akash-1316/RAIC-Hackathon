@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { apiRequest } from '../lib/api.js';
-import upiQr from '../assets/hackathon-upi-qr.jpeg';
+import upiQr from '../assets/hackathon-upi-qr.jpg';
 
 export default function OfflinePayment() {
   const navigate = useNavigate();
