@@ -1,284 +1,194 @@
 
-/* =========================================
-   RAIC NAVBAR
-   DARK PREMIUM THEME
-========================================= */
+/* IGNITE PREMIUM NAVBAR */
 
 .site-header {
   height: 76px;
+  width: 100%;
   position: sticky;
   top: 0;
   z-index: 1000;
-
-  background: rgba(8, 8, 8, 0.94);
-  border-bottom: 1px solid rgba(169, 138, 203, 0.14);
-
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(7, 7, 8, 0.96);
+  border-bottom: 1px solid #202023;
+  backdrop-filter: blur(18px);
 }
 
-/* =========================================
-   NAVIGATION CONTAINER
-========================================= */
-
 .nav-wrap {
-  width: min(calc(100% - 64px), 1560px);
+  width: min(calc(100% - 80px), 1500px);
   height: 100%;
   margin: auto;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 30px;
 }
 
-/* =========================================
-   RAIC TEXT BRANDING
-========================================= */
+/* BRAND */
 
-.brand {
+.ignite-brand {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-
-  flex-shrink: 0;
-  gap: 3px;
-
+  gap: 5px;
   text-decoration: none;
+  flex-shrink: 0;
+}
+
+.ignite-logo {
+  font-size: 30px;
   line-height: 1;
+  font-weight: 950;
+  letter-spacing: -2px;
+  color: #fff;
 }
 
-.brand-name {
-  color: #ffffff;
-
-  font-size: 31px;
-  font-weight: 900;
-  letter-spacing: -1.8px;
-
-  line-height: 1;
-  transition: transform 0.2s ease;
+.ignite-logo span {
+  background: linear-gradient(110deg, #a78bfa, #8054a5);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
-.brand-ai {
-  color: #a78bfa;
-}
-
-.brand-subtitle {
-  margin-top: 4px;
-
-  color: #92909f;
-
+.ignite-tagline {
   font-size: 8px;
-  font-weight: 700;
   letter-spacing: 1.3px;
-
-  white-space: nowrap;
-  line-height: 1;
+  font-weight: 700;
+  color: #88858f;
 }
 
-.brand:hover .brand-name {
-  transform: translateY(-1px);
-}
-
-/* =========================================
-   DESKTOP NAVIGATION
-========================================= */
+/* DESKTOP LINKS */
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 29px;
+  gap: 30px;
 }
 
 .nav-links > a {
   position: relative;
-
+  color: #aaa8b1;
   font-size: 13px;
-  font-weight: 550;
-
-  color: #b8b6c1;
+  font-weight: 600;
   text-decoration: none;
-
-  transition: color 0.2s ease;
-}
-
-.nav-links > a::after {
-  content: "";
-
-  position: absolute;
-  left: 0;
-  bottom: -8px;
-
-  width: 0;
-  height: 2px;
-
-  background: #a78bfa;
-  border-radius: 5px;
-
-  transition: width 0.2s ease;
+  transition: color .2s ease;
 }
 
 .nav-links > a:hover,
 .nav-links > a.active {
-  color: #ffffff;
+  color: white;
 }
 
-.nav-links > a:hover::after,
-.nav-links > a.active::after {
+.nav-links > a::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  border-radius: 10px;
+  background: #a78bfa;
+  transition: width .25s ease;
+}
+
+.nav-links > a.active::after,
+.nav-links > a:hover::after {
   width: 100%;
 }
 
-/* =========================================
-   DESKTOP AUTH ACTIONS
-========================================= */
+/* RIGHT ACTIONS */
 
 .desktop-nav-actions {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 25px;
 }
 
 .signin-link {
-  font-size: 13px;
-  font-weight: 550;
-
-  color: #eeeeee;
+  color: #eee;
   text-decoration: none;
-
-  transition: color 0.2s ease;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .signin-link:hover {
-  color: #a78bfa;
+  color: #b99be9;
 }
-
-/* =========================================
-   REGISTER / CTA BUTTON
-========================================= */
 
 .nav-cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-
-  padding: 11px 18px;
-
-  border: 1px solid rgba(167, 139, 250, 0.4);
+  padding: 12px 20px;
+  border: 1px solid rgba(167, 139, 250, .4);
   border-radius: 5px;
-
-  background: linear-gradient(
-    110deg,
-    #071f49,
-    #8054a5
-  );
-
-  color: #ffffff;
-
+  background: linear-gradient(110deg, #071f49, #8054a5);
+  color: white;
   font-size: 13px;
-  font-weight: 650;
-
+  font-weight: 700;
   text-decoration: none;
-
-  transition:
-    opacity 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
 }
 
 .nav-cta:hover {
-  opacity: 0.95;
   transform: translateY(-2px);
-
-  box-shadow: 0 6px 20px rgba(128, 84, 165, 0.25);
+  box-shadow: 0 5px 22px rgba(128, 84, 165, .3);
 }
 
-/* =========================================
-   MOBILE MENU
-========================================= */
+/* MOBILE */
 
 .menu-toggle,
 .mobile-nav-actions {
   display: none;
 }
 
-/* =========================================
-   TABLET AND MOBILE
-========================================= */
-
 @media (max-width: 900px) {
-
   .site-header {
     height: 68px;
   }
 
   .nav-wrap {
     width: calc(100% - 36px);
-    gap: 12px;
   }
 
-  .brand-name {
+  .ignite-logo {
     font-size: 27px;
-  }
-
-  .brand-subtitle {
-    font-size: 7px;
-    letter-spacing: 1px;
   }
 
   .desktop-nav-actions {
     display: none;
   }
 
-  /* Mobile menu button */
-
   .menu-toggle {
     display: grid;
     place-items: center;
-
-    border: 0;
     background: transparent;
-
-    color: #ffffff;
-
-    padding: 8px;
+    border: none;
+    color: white;
+    padding: 9px;
     cursor: pointer;
   }
 
-  .menu-toggle:hover {
-    color: #a78bfa;
-  }
-
-  /* Mobile navigation panel */
-
   .nav-links {
     display: none;
-
     position: absolute;
     top: 68px;
     left: 0;
-
+    right: 0;
     width: 100%;
     padding: 15px 22px 24px;
-
-    background: #101018;
-    border-bottom: 1px solid var(--border, #292536);
-
+    background: #0c0c0f;
+    border-bottom: 1px solid #29252f;
+    flex-direction: column;
     align-items: stretch;
     gap: 0;
   }
 
   .nav-links.nav-open {
     display: flex;
-    flex-direction: column;
   }
 
   .nav-links > a {
-    padding: 14px 3px;
-
-    border-bottom: 1px solid var(--border, #292536);
-
+    padding: 16px 3px;
+    border-bottom: 1px solid #222126;
     font-size: 14px;
   }
 
@@ -286,35 +196,23 @@
     display: none;
   }
 
-  /* Mobile authentication links */
-
   .mobile-nav-actions {
     display: flex;
     flex-direction: column;
     gap: 10px;
-
     padding-top: 15px;
   }
 
   .mobile-nav-actions .mobile-signin {
     display: block;
-
     padding: 12px 0;
-
-    border: 0;
     background: transparent;
-
-    color: #dddddd;
-
-    font-size: 14px;
+    border: none;
+    color: #ddd;
     text-align: left;
     text-decoration: none;
-
+    font-size: 14px;
     cursor: pointer;
-  }
-
-  .mobile-nav-actions .mobile-signin:hover {
-    color: #a78bfa;
   }
 
   .mobile-nav-actions .nav-cta {
@@ -322,23 +220,16 @@
   }
 }
 
-/* =========================================
-   SMALL PHONES
-========================================= */
-
-@media (max-width: 360px) {
-
+@media (max-width: 380px) {
   .nav-wrap {
-    width: calc(100% - 24px);
+    width: calc(100% - 26px);
   }
 
-  .brand-name {
-    font-size: 24px;
+  .ignite-logo {
+    font-size: 25px;
   }
 
-  .brand-subtitle {
-    font-size: 6px;
-    letter-spacing: 0.8px;
+  .ignite-tagline {
+    font-size: 7px;
   }
-
 }
