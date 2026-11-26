@@ -11,6 +11,7 @@ import {
 import TierPyramid from '../components/TierPyramid';
 import Countdown from '../components/Countdown';
 import SilverJubilee from '../components/SliverJubliee';
+
 const highlights = [
   {
     icon: Code2,
@@ -43,27 +44,64 @@ export default function Home() {
     <main>
 
       {/* HERO SECTION */}
+
       <section className="hero">
         <div className="hero-grid" />
 
         <div className="container hero-content">
 
-          <div className="eyebrow-pill">
-            <span className="status-dot" />
-            RAIC PRESENTS
-            <span className="eyebrow-divider">/</span>
-            24-HOUR HACKATHON
+          {/* OFFER AND EVENT BADGES */}
+
+          <div className="hero-badges">
+
+            <div className="early-bird-pill">
+              <span className="early-bird-dot" />
+
+              <span className="early-bird-label">
+                EARLY BIRD LIVE
+              </span>
+
+              <span className="early-bird-divider">/</span>
+
+              <span className="early-bird-text">
+                First 25 registrations only
+              </span>
+
+              <span className="early-bird-arrow">↗</span>
+            </div>
+
+            <div className="eyebrow-pill">
+              <span className="status-dot" />
+
+              22–23 DECEMBER 2026
+
+              <span className="eyebrow-divider">/</span>
+
+              24-HOUR HACKATHON BY RAIC
+            </div>
+
           </div>
 
+          {/* HERO TITLE */}
+
           <h1 className="hero-title">
-            Build. Innovate. <span>Dominate.</span>
+            <span className="hero-title-highlight">
+              IGNITE
+            </span>{' '}
+            2026.
+            <br />
+            Build. Dominate.
           </h1>
 
           <p className="hero-description">
-            24 hours. Real problems. Extraordinary solutions.
+            24 hours of pure innovation · Real-world problem
+            statements · Exciting prize pool.
           </p>
 
+          {/* HERO ACTIONS */}
+
           <div className="hero-actions">
+
             <Link to="/signup" className="button button-light">
               Register now
               <ArrowUpRight size={18} />
@@ -72,22 +110,61 @@ export default function Home() {
             <Link to="/about" className="button button-outline">
               Explore event
             </Link>
+
           </div>
 
-          <Countdown />
-           <div className="hero-meta">
+          {/* COUNTDOWN */}
+
+          <div className="hero-countdown-wrap">
+
+            <div className="hero-countdown-header">
+
+              <span className="hero-countdown-label">
+                <span className="status-dot" />
+                THE COUNTDOWN IS ON
+              </span>
+
+              <span className="hero-countdown-tag">
+                24H
+              </span>
+
+            </div>
+
+            <h2 className="hero-countdown-title">
+              Time to <span>innovate.</span>
+            </h2>
+
+            <Countdown />
+
+            <div className="hero-countdown-footer">
+              <span>INNOVATION</span>
+              <span>TECHNOLOGY</span>
+              <span>COLLABORATION</span>
+            </div>
+
+          </div>
+
+          {/* EVENT META */}
+
+          <div className="hero-meta">
             <span>24-HOUR CHALLENGE</span>
+
             <span>
               INNOVATION <i>•</i> TECHNOLOGY
             </span>
           </div>
-          <br />
-          <br/>
-          <SilverJubilee />
+
+          {/* SILVER JUBILEE */}
+
+          <div className="hero-jubilee">
+            <SilverJubilee />
+          </div>
+
         </div>
       </section>
 
       {/* EVENT OVERVIEW */}
+
       <section
         className="section overview-section"
         id="event-overview"
@@ -138,6 +215,7 @@ export default function Home() {
       </section>
 
       {/* THREE-LEVEL TIER PYRAMID */}
+
       <section
         className="section tiers-preview"
         id="tiers-preview"
@@ -160,7 +238,6 @@ export default function Home() {
             </p>
           </div>
 
-          {/* PYRAMID STRUCTURE */}
           <TierPyramid />
 
           <div className="section-action">
@@ -177,6 +254,7 @@ export default function Home() {
       </section>
 
       {/* REGISTRATION CTA */}
+
       <section className="register-strip">
         <div className="container register-strip-inner">
 
