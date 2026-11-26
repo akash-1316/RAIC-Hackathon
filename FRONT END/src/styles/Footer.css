@@ -1,57 +1,435 @@
 
-.footer-brand {
+/* =========================================
+   IGNITE 2026 - PREMIUM FOOTER
+========================================= */
+
+.site-footer {
+  position: relative;
+  isolation: isolate;
+
+  overflow: hidden;
+
+  padding-top: 65px;
+
+  background: #080809;
+  border-top: 1px solid rgba(169,138,203,.17);
+}
+
+/* =========================================
+   SUBTLE GRID BACKGROUND
+========================================= */
+
+.footer-grid-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+
+  pointer-events: none;
+
+  background-image:
+    linear-gradient(
+      rgba(169,138,203,.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(169,138,203,.025) 1px,
+      transparent 1px
+    );
+
+  background-size: 42px 42px;
+
+  mask-image: linear-gradient(
+    to bottom,
+    #000,
+    transparent 90%
+  );
+}
+
+/* =========================================
+   MAIN FOOTER LAYOUT
+========================================= */
+
+.footer-main {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+
+  gap: 70px;
+
+  padding-bottom: 55px;
+}
+
+/* =========================================
+   BRAND SECTION
+========================================= */
+
+.footer-brand-section {
+  max-width: 430px;
+}
+
+/* IGNITE WORDMARK */
+
+.footer-wordmark {
   display: inline-flex;
-  align-items: center;
-  gap: 12px;
+  align-items: baseline;
+  gap: 9px;
+
   text-decoration: none;
-  margin-bottom: 15px;
+  line-height: 1;
 }
 
-.footer-logo {
-  display: block;
-  object-fit: contain;
+.footer-ignite {
+  color: #ffffff;
+
+  font-size: 39px;
+  font-weight: 900;
+
+  letter-spacing: -2.5px;
 }
 
-.silver-footer-logo {
-  width: 48px;
-  height: 48px;
+.footer-ignite span {
+  background: linear-gradient(
+    100deg,
+    #c5a6e9,
+    #8054a5
+  );
+
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
-.raic-footer-logo {
-  width: 84px;
-  height: 54px;
-  border-radius: 25%;
+.footer-year {
+  color: #77717f;
+
+  font-size: 17px;
+  font-weight: 600;
+
+  letter-spacing: -.5px;
 }
 
-.footer-brand-divider {
-  color: #a98acb;
-  font-size: 24px;
-  font-weight: 400;
+.footer-wordmark:hover .footer-ignite {
+  text-shadow: 0 0 20px rgba(169,138,203,.22);
+}
+
+/* BRAND ACCENT LINE */
+
+.footer-brand-line {
+  width: 45px;
+  height: 2px;
+
+  margin: 17px 0 19px;
+
+  background: linear-gradient(
+    90deg,
+    #b99dde,
+    #8054a5
+  );
+
+  border-radius: 5px;
+}
+
+/* DESCRIPTION */
+
+.footer-description {
+  color: #dedbe5;
+
+  font-size: 15px;
+  font-weight: 450;
+
+  line-height: 1.8;
 }
 
 .footer-collaboration {
-  color: #9995a5;
+  margin-top: 13px;
+
+  color: #898493;
+
   font-size: 12px;
-  line-height: 1.6;
-  margin-top: 8px;
+  line-height: 1.8;
 }
 
-@media (max-width: 600px) {
-  .footer-brand {
-    gap: 9px;
+.footer-collaboration strong {
+  color: #c3a0e5;
+  font-weight: 750;
+}
+
+/* =========================================
+   SOCIAL ICONS
+========================================= */
+
+.footer-socials {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  margin-top: 25px;
+}
+
+.footer-social-link {
+  display: grid;
+  place-items: center;
+
+  width: 39px;
+  height: 39px;
+
+  border: 1px solid rgba(169,138,203,.23);
+  border-radius: 6px;
+
+  background: rgba(128,84,165,.07);
+
+  color: #c3a0e5;
+
+  text-decoration: none;
+
+  transition:
+    color .2s ease,
+    background .2s ease,
+    border-color .2s ease,
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.footer-social-link:hover {
+  color: #ffffff;
+
+  background: rgba(128,84,165,.22);
+  border-color: #a98acb;
+
+  transform: translateY(-3px);
+
+  box-shadow: 0 5px 18px rgba(128,84,165,.15);
+}
+
+.footer-social-unconfigured {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+/* =========================================
+   FOOTER NAVIGATION
+========================================= */
+
+.footer-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  gap: 35px;
+}
+
+.footer-link-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  gap: 17px;
+}
+
+.footer-heading {
+  margin-bottom: 4px;
+
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 750;
+
+  letter-spacing: .4px;
+}
+
+.footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  color: #aaa5b5;
+
+  font-size: 13px;
+  font-weight: 450;
+
+  text-decoration: none;
+
+  transition:
+    color .2s ease,
+    transform .2s ease;
+}
+
+.footer-link-arrow {
+  opacity: 0;
+  color: #b99dde;
+
+  transform: translate(-3px, 3px);
+
+  transition:
+    opacity .2s ease,
+    transform .2s ease;
+}
+
+.footer-link:hover {
+  color: #d8c0f0;
+  transform: translateX(2px);
+}
+
+.footer-link:hover .footer-link-arrow {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* =========================================
+   FOOTER BOTTOM
+========================================= */
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  min-height: 65px;
+
+  border-top: 1px solid rgba(169,138,203,.13);
+
+  color: #77727f;
+
+  font-size: 11px;
+}
+
+.footer-bottom-message {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  color: #aaa2b5;
+}
+
+.footer-bottom-dot {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #a98acb;
+  box-shadow: 0 0 9px #a98acb;
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 900px) {
+
+  .footer-main {
+    grid-template-columns: 1fr;
+    gap: 45px;
   }
 
-  .silver-footer-logo {
+  .footer-brand-section {
+    max-width: 100%;
+  }
+
+  .footer-links {
+    gap: 25px;
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+  .site-footer {
+    padding-top: 42px;
+  }
+
+  .footer-main {
+    grid-template-columns: 1fr;
+    gap: 37px;
+
+    padding-bottom: 35px;
+  }
+
+  .footer-ignite {
+    font-size: 35px;
+  }
+
+  .footer-year {
+    font-size: 15px;
+  }
+
+  .footer-brand-line {
+    margin: 14px 0 16px;
+  }
+
+  .footer-description {
+    font-size: 14px;
+  }
+
+  .footer-collaboration {
+    font-size: 11px;
+  }
+
+  .footer-socials {
+    margin-top: 20px;
+    gap: 10px;
+  }
+
+  .footer-social-link {
     width: 42px;
     height: 42px;
   }
 
-  .raic-footer-logo {
-    width: 38px;
-    height: 38px;
+  /* Navigation columns */
+
+  .footer-links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 30px 18px;
   }
 
-  .footer-brand-divider {
-    font-size: 21px;
+  .footer-link-group {
+    gap: 15px;
   }
+
+  .footer-heading {
+    font-size: 13px;
+  }
+
+  .footer-link {
+    font-size: 12px;
+  }
+
+  /* Bottom section */
+
+  .footer-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+
+    justify-content: center;
+    gap: 12px;
+
+    padding-top: 18px;
+    padding-bottom: 18px;
+
+    font-size: 10px;
+  }
+}
+
+/* =========================================
+   EXTRA SMALL PHONES
+========================================= */
+
+@media (max-width: 360px) {
+
+  .footer-links {
+    gap: 25px 12px;
+  }
+
+  .footer-link {
+    font-size: 11px;
+  }
+
+  .footer-ignite {
+    font-size: 32px;
+  }
+
 }
