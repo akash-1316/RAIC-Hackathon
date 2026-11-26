@@ -42,7 +42,6 @@ const highlights = [
 export default function Home() {
   return (
     <main>
-
       {/* HERO SECTION */}
 
       <section className="hero">
@@ -113,18 +112,10 @@ export default function Home() {
 
           </div>
 
-          {/* COUNTDOWN */}
+          {/* COUNTDOWN - HEADING IS RENDERED BY COUNTDOWN COMPONENT */}
 
-  
-
+          <div className="hero-countdown-wrap">
             <Countdown />
-
-            <div className="hero-countdown-footer">
-              <span>INNOVATION</span>
-              <span>TECHNOLOGY</span>
-              <span>COLLABORATION</span>
-            </div>
-
           </div>
 
           {/* EVENT META */}
