@@ -11,12 +11,20 @@ import fs from 'fs';
 import connectDB from './config/db.js';
 import { seed } from './utils/seed.js';
 
+// =====================================
+// ROUTE IMPORTS
+// =====================================
+
 import authRoutes from './routes/auth.js';
 import tierRoutes from './routes/tiers.js';
 import registrationRoutes from './routes/registrations.js';
 import paymentRoutes from './routes/payments.js';
 import adminRoutes from './routes/admin.js';
 import contactRoutes from './routes/ContactRoutes.js';
+
+// =====================================
+// EXPRESS APP
+// =====================================
 
 const app = express();
 
@@ -37,17 +45,43 @@ fs.mkdirSync(uploadDir, { recursive: true });
 
 app.use(helmet());
 
-const origins = [
+// =====================================
+// CORS CONFIGURATION
+// =====================================
+
+const allowedOrigins = [
   process.env.CLIENT_ORIGIN,
-  process.env.ADMIN_ORIGIN
-].filter(Boolean);
+  process.env.ADMIN_ORIGIN,
+  'https://ignite-2k26-two.vercel.app'
+]
+  .filter(Boolean)
+  .map(origin => origin.trim().replace(/\/+$/, ''));
+
+console.log('=====================================');
+console.log('RAIC API CORS CONFIGURATION');
+console.log('Allowed origins:', allowedOrigins);
+console.log('=====================================');
 
 app.use(
   cors({
-    origin: (origin, cb) =>
-      !origin || origins.includes(origin)
-        ? cb(null, true)
-        : cb(new Error('Origin not allowed by CORS')),
+    origin: (origin, callback) => {
+      // Allow requests without an Origin header
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      const normalizedOrigin = origin.trim().replace(/\/+$/, '');
+
+      if (allowedOrigins.includes(normalizedOrigin)) {
+        return callback(null, true);
+      }
+
+      console.error('CORS BLOCKED ORIGIN:', normalizedOrigin);
+      console.error('ALLOWED ORIGINS:', allowedOrigins);
+
+      return callback(new Error('Origin not allowed by CORS'));
+    },
+
     credentials: false
   })
 );
@@ -76,8 +110,8 @@ app.use(
 // HEALTH CHECK
 // =====================================
 
-app.get('/api/health', (_q, res) => {
-  res.json({
+app.get('/api/health', (_req, res) => {
+  res.status(200).json({
     ok: true,
     service: 'RAIC Hackathon API'
   });
@@ -90,7 +124,7 @@ app.get('/api/health', (_q, res) => {
 // Authentication
 app.use('/api/auth', authRoutes);
 
-// Tiers
+// Challenge tiers
 app.use('/api/tiers', tierRoutes);
 
 // Registrations
@@ -99,18 +133,18 @@ app.use('/api/registrations', registrationRoutes);
 // Payments
 app.use('/api/payments', paymentRoutes);
 
-// Public Contact Form
+// Public contact form
 app.use('/api/contact', contactRoutes);
 
-// Admin Panel
+// Admin panel
 app.use('/api/admin', adminRoutes);
 
 // =====================================
 // GLOBAL ERROR HANDLER
 // =====================================
 
-app.use((err, _q, res, _n) => {
-  console.error(err);
+app.use((err, _req, res, _next) => {
+  console.error('API ERROR:', err);
 
   if (err.code === 11000) {
     return res.status(409).json({
@@ -130,7 +164,7 @@ app.use((err, _q, res, _n) => {
     });
   }
 
-  res.status(err.status || 500).json({
+  return res.status(err.status || 500).json({
     message: err.message || 'Internal server error.'
   });
 });
@@ -140,22 +174,32 @@ app.use((err, _q, res, _n) => {
 // =====================================
 
 const start = async () => {
-  if (!process.env.JWT_SECRET) {
-    throw new Error('JWT_SECRET is required');
+  try {
+    if (!process.env.JWT_SECRET) {
+      throw new Error('JWT_SECRET is required');
+    }
+
+    // Connect MongoDB
+    await connectDB();
+
+    // Seed initial admin/data
+    await seed();
+
+    // Start Express server
+    const port = process.env.PORT || 5000;
+
+    app.listen(port, '0.0.0.0', () => {
+      console.log('=====================================');
+      console.log('RAIC HACKATHON API STARTED');
+      console.log(`Port: ${port}`);
+      console.log('Environment:', process.env.NODE_ENV || 'development');
+      console.log('=====================================');
+    });
+
+  } catch (error) {
+    console.error('SERVER STARTUP ERROR:', error);
+    process.exit(1);
   }
-
-  await connectDB();
-
-  await seed();
-
-  const port = process.env.PORT || 5000;
-
-  app.listen(port, () => {
-    console.log(`RAIC API listening on ${port}`);
-  });
 };
 
-start().catch(error => {
-  console.error(error);
-  process.exit(1);
-});
+start();
