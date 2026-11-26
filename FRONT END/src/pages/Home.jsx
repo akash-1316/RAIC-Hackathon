@@ -115,24 +115,7 @@ export default function Home() {
 
           {/* COUNTDOWN */}
 
-          <div className="hero-countdown-wrap">
-
-            <div className="hero-countdown-header">
-
-              <span className="hero-countdown-label">
-                <span className="status-dot" />
-                THE COUNTDOWN IS ON
-              </span>
-
-              <span className="hero-countdown-tag">
-                24H
-              </span>
-
-            </div>
-
-            <h2 className="hero-countdown-title">
-              Time to <span>innovate.</span>
-            </h2>
+  
 
             <Countdown />
 
