@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import '../styles/Countdown.css';
 
-const EVENT_DATE = new Date('2026-12-23T09:00:00+05:30');
+const EVENT_DATE = new Date('2026-12-22T09:00:00+05:30');
 
 const getTimeLeft = () => {
   const difference = Math.max(0, EVENT_DATE.getTime() - Date.now());
