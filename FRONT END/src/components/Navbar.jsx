@@ -6,9 +6,10 @@ import { Menu, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { apiRequest } from '../lib/api.js';
 
+import '../styles/Navbar.css';
+
 export default function Navbar() {
   const navigate = useNavigate();
-
   const { user, isAuthenticated, logout } = useAuth();
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -24,9 +25,7 @@ export default function Navbar() {
 
     apiRequest('/registrations/mine')
       .then(data => {
-        if (active) {
-          setWorkflow(data.workflow || {});
-        }
+        if (active) setWorkflow(data.workflow || {});
       })
       .catch(() => {
         if (active) setWorkflow(null);
@@ -47,64 +46,44 @@ export default function Navbar() {
 
   const getParticipantAction = () => {
     if (!workflow?.hasRegistration) {
-      return {
-        label: 'Register Team',
-        path: '/register-team'
-      };
+      return { label: 'Register Team', path: '/register-team' };
     }
 
     if (workflow.complete) {
-      return {
-        label: 'Dashboard',
-        path: '/participant'
-      };
+      return { label: 'Dashboard', path: '/participant' };
     }
 
     if (workflow.paymentStatus === 'rejected') {
-      return {
-        label: 'Resubmit Payment',
-        path: '/offline-payment'
-      };
+      return { label: 'Resubmit Payment', path: '/offline-payment' };
     }
 
     if (workflow.paymentStatus === 'not_submitted') {
-      return {
-        label: 'Complete Payment',
-        path: '/offline-payment'
-      };
+      return { label: 'Complete Payment', path: '/offline-payment' };
     }
 
-    return {
-      label: 'My Dashboard',
-      path: '/participant'
-    };
+    return { label: 'My Dashboard', path: '/participant' };
   };
 
   const participantAction = getParticipantAction();
 
   return (
     <header className="site-header">
-
       <div className="nav-wrap">
-
-        {/* RAIC BRANDING */}
 
         <Link
           to="/"
-          className="brand"
+          className="ignite-brand"
           onClick={closeMenu}
-          aria-label="RAIC Home"
+          aria-label="IGNITE 2026 Home"
         >
-          <span className="brand-name">
-            R<span className="brand-ai">AI</span>C
+          <span className="ignite-logo">
+            IGN<span>ITE</span>
           </span>
 
-          <span className="brand-subtitle">
-            RAGHU ARTIFICIAL INTELLIGENCE CLUB
+          <span className="ignite-tagline">
+            BY RAIC · 22–23 DEC 2026
           </span>
         </Link>
-
-        {/* MOBILE MENU BUTTON */}
 
         <button
           className="menu-toggle"
@@ -113,37 +92,17 @@ export default function Navbar() {
           aria-expanded={menuOpen}
           onClick={() => setMenuOpen(!menuOpen)}
         >
-          {menuOpen ? <X size={24} /> : <Menu size={24} />}
+          {menuOpen ? <X size={23} /> : <Menu size={23} />}
         </button>
 
-        {/* NAVIGATION LINKS */}
-
         <nav className={`nav-links ${menuOpen ? 'nav-open' : ''}`}>
-
-          <NavLink to="/" end onClick={closeMenu}>
-            Home
-          </NavLink>
-
-          <NavLink to="/about" onClick={closeMenu}>
-            About
-          </NavLink>
-
-          <NavLink to="/tiers" onClick={closeMenu}>
-            Tiers
-          </NavLink>
-
-          <NavLink to="/pricing" onClick={closeMenu}>
-            Pricing
-          </NavLink>
-
-          <NavLink to="/contact" onClick={closeMenu}>
-            Contact
-          </NavLink>
-
-          {/* MOBILE AUTHENTICATION ACTIONS */}
+          <NavLink to="/" end onClick={closeMenu}>Home</NavLink>
+          <NavLink to="/about" onClick={closeMenu}>About</NavLink>
+          <NavLink to="/tiers" onClick={closeMenu}>Tiers</NavLink>
+          <NavLink to="/pricing" onClick={closeMenu}>Pricing</NavLink>
+          <NavLink to="/contact" onClick={closeMenu}>Contact</NavLink>
 
           <div className="mobile-nav-actions">
-
             {isAuthenticated ? (
               <>
                 <span className="mobile-signin">
@@ -167,7 +126,6 @@ export default function Navbar() {
                 </Link>
 
                 <button
-                  type="button"
                   className="mobile-signin"
                   onClick={handleLogout}
                 >
@@ -193,14 +151,10 @@ export default function Navbar() {
                 </Link>
               </>
             )}
-
           </div>
         </nav>
 
-        {/* DESKTOP AUTHENTICATION ACTIONS */}
-
         <div className="desktop-nav-actions">
-
           {isAuthenticated ? (
             <>
               <Link
@@ -210,41 +164,26 @@ export default function Navbar() {
                 {participantAction.label}
               </Link>
 
-              <Link
-                to="/profile"
-                className="signin-link"
-              >
+              <Link to="/profile" className="signin-link">
                 {user?.name || 'Profile'}
               </Link>
 
-              <button
-                type="button"
-                className="nav-cta"
-                onClick={handleLogout}
-              >
+              <button className="nav-cta" onClick={handleLogout}>
                 Logout
               </button>
             </>
           ) : (
             <>
-              <Link
-                to="/signin"
-                className="signin-link"
-              >
+              <Link to="/signin" className="signin-link">
                 Sign In
               </Link>
 
-              <Link
-                to="/signup"
-                className="nav-cta"
-              >
+              <Link to="/signup" className="nav-cta">
                 Register
               </Link>
             </>
           )}
-
         </div>
-
       </div>
     </header>
   );
