@@ -76,7 +76,7 @@ export default function Home() {
 
               <span className="eyebrow-divider">/</span>
 
-              24-HOUR HACKATHON BY RAIC
+              25-HOUR HACKATHON BY RAIC
             </div>
 
           </div>
@@ -93,7 +93,7 @@ export default function Home() {
           </h1>
 
           <p className="hero-description">
-            24 hours of pure innovation · Real-world problem
+            25 hours of pure innovation · Real-world problem
             statements · Exciting prize pool.
           </p>
 
@@ -121,7 +121,7 @@ export default function Home() {
           {/* EVENT META */}
 
           <div className="hero-meta">
-            <span>24-HOUR CHALLENGE</span>
+            <span>25-HOUR CHALLENGE</span>
 
             <span>
               INNOVATION <i>•</i> TECHNOLOGY
@@ -155,7 +155,7 @@ export default function Home() {
             </h2>
 
             <p>
-              A 24-hour innovation challenge where teams work on
+              A 25-hour innovation challenge where teams work on
               real-world problem statements and turn ideas into
               demonstrable solutions.
             </p>
@@ -238,7 +238,7 @@ export default function Home() {
             </span>
 
             <h2>
-              Your next 24 hours start here.
+              Your next 25 hours start here.
             </h2>
 
             <p>
