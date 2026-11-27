@@ -9,6 +9,32 @@ const r = Router();
 
 r.use(auth);
 
+// Academic year configuration
+const ACADEMIC_YEARS = [
+  '1st Year',
+  '2nd Year',
+  '3rd Year',
+  '4th Year'
+];
+
+// Eligibility based on the highest academic year in the team
+const TIER_ELIGIBILITY = {
+  1: ['Basic'],
+  2: ['Basic', 'Advanced'],
+  3: ['Advanced', 'Hard'],
+  4: ['Hard']
+};
+
+const getEligibleTiers = members => {
+  const highestYear = Math.max(
+    ...members.map(member =>
+      ACADEMIC_YEARS.indexOf(member.academicYear) + 1
+    )
+  );
+
+  return TIER_ELIGIBILITY[highestYear] || [];
+};
+
 // CREATE TEAM REGISTRATION
 r.post('/', async (req, res, next) => {
   try {
@@ -31,7 +57,8 @@ r.post('/', async (req, res, next) => {
     const clean = members.map(member => ({
       name: String(member.name || '').trim(),
       email: String(member.email || '').trim().toLowerCase(),
-      phone: String(member.phone || '').trim()
+      phone: String(member.phone || '').trim(),
+      academicYear: String(member.academicYear || '').trim()
     }));
 
     if (
@@ -45,6 +72,18 @@ r.post('/', async (req, res, next) => {
       return res.status(400).json({
         message:
           'Check every team member name, email and phone number.'
+      });
+    }
+
+    // Validate academic years
+    if (
+      clean.some(
+        member => !ACADEMIC_YEARS.includes(member.academicYear)
+      )
+    ) {
+      return res.status(400).json({
+        message:
+          'Please select a valid academic year for every team member.'
       });
     }
 
@@ -67,6 +106,17 @@ r.post('/', async (req, res, next) => {
       return res.status(409).json({
         message:
           'You already have an active team registration.'
+      });
+    }
+
+    // Calculate eligible tiers using the highest year
+    const eligibleTiers = getEligibleTiers(clean);
+
+    if (!eligibleTiers.includes(tier)) {
+      return res.status(400).json({
+        message:
+          `Your team is not eligible for the ${tier} tier. ` +
+          `Eligible tiers: ${eligibleTiers.join(', ')}.`
       });
     }
 
