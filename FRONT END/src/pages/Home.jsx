@@ -33,8 +33,8 @@ const highlights = [
   },
   {
     icon: Zap,
-    title: '24-hour sprint',
-    text: 'Plan, build, test and present within an intensive 24-hour challenge.',
+    title: '25-hour sprint',
+    text: 'Plan, build, test and present within an intensive 25-hour challenge.',
     number: '04'
   }
 ];
