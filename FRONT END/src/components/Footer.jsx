@@ -79,7 +79,7 @@ export default function Footer() {
           <div className="footer-brand-line" />
 
           <p className="footer-description">
-            24 hours. Real problems.
+            25 hours. Real problems.
             <br />
             Extraordinary solutions.
           </p>
