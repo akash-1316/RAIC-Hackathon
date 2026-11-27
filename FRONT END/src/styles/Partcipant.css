@@ -935,3 +935,224 @@
     font-size: 13px;
   }
 }
+
+/* =========================================
+   TIER ACADEMIC YEAR RECOMMENDATIONS
+   DESKTOP + TABLET + MOBILE
+========================================= */
+
+.registration-container .tier-guidance {
+  color: #aaaab5;
+  font-size: 15px;
+  line-height: 1.7;
+  margin: 0 0 20px;
+}
+
+/* Tier recommendation panel */
+
+.registration-container .tier-recommendation {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 7px;
+
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+
+  margin: 14px 0;
+  padding: 14px;
+
+  background: rgba(169, 138, 203, 0.08);
+  border: 1px solid rgba(169, 138, 203, 0.25);
+  border-radius: 9px;
+
+  text-align: left;
+}
+
+/* Explicitly separate each recommendation line */
+
+.registration-container .tier-recommendation-label,
+.registration-container .tier-recommendation-years,
+.registration-container .tier-recommendation-description {
+  display: block;
+  width: 100%;
+  margin: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.registration-container .tier-recommendation-label {
+  color: #a98acb;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+  line-height: 1.5;
+}
+
+.registration-container .tier-recommendation-years {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 750;
+  line-height: 1.5;
+}
+
+.registration-container .tier-recommendation-description {
+  color: #aaa5b2;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+/* Selected tier recommendation */
+
+.registration-container .tier-option.selected .tier-recommendation {
+  background: rgba(169, 138, 203, 0.14);
+  border-color: #a98acb;
+}
+
+/* Tier description */
+
+.registration-container .tier-option-description {
+  display: block;
+  width: 100%;
+  color: #aaaab5;
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+/* Per participant label */
+
+.registration-container .tier-price-note {
+  display: block;
+  width: 100%;
+  color: #a78bfa;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+/* =========================================
+   DESKTOP TIER CARDS
+========================================= */
+
+@media (min-width: 769px) {
+  .registration-container .tier-selection-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 22px;
+  }
+
+  .registration-container .tier-option {
+    min-width: 0;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 24px;
+  }
+
+  .registration-container .tier-recommendation {
+    min-height: 105px;
+  }
+}
+
+/* =========================================
+   TABLET VIEW
+========================================= */
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .registration-container .tier-selection-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .registration-container .tier-option {
+    min-width: 0;
+    padding: 18px;
+  }
+
+  .registration-container .tier-recommendation {
+    padding: 12px;
+  }
+}
+
+/* =========================================
+   MOBILE VIEW
+========================================= */
+
+@media (max-width: 480px) {
+  .registration-page {
+    padding: 22px 14px;
+  }
+
+  .registration-container {
+    width: 100%;
+  }
+
+  .registration-container > h1 {
+    font-size: 28px;
+  }
+
+  .registration-container > p {
+    font-size: 14px;
+  }
+
+  .registration-container .form-section {
+    padding: 16px;
+    margin-bottom: 18px;
+  }
+
+  .registration-container .tier-selection-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .registration-container .tier-option {
+    width: 100%;
+    min-width: 0;
+    padding: 18px;
+    gap: 12px;
+  }
+
+  .registration-container .tier-option-name {
+    font-size: 18px;
+  }
+
+  .registration-container .tier-option strong {
+    font-size: 25px;
+  }
+
+  .registration-container .tier-recommendation {
+    padding: 12px;
+    margin: 10px 0;
+    gap: 6px;
+  }
+
+  .registration-container .tier-recommendation-label {
+    font-size: 9px;
+  }
+
+  .registration-container .tier-recommendation-years {
+    font-size: 13px;
+  }
+
+  .registration-container .tier-recommendation-description {
+    font-size: 11px;
+    line-height: 1.6;
+  }
+
+  .registration-container .tier-option-description {
+    font-size: 12px;
+  }
+
+  .registration-container .tier-price-note {
+    font-size: 12px;
+  }
+
+  .registration-container form > button[type="submit"] {
+    min-height: 50px;
+    font-size: 14px;
+  }
+}
