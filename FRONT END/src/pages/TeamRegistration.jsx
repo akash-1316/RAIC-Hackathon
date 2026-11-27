@@ -6,37 +6,65 @@ import { apiRequest } from '../lib/api.js';
 const MIN_MEMBERS = 3;
 const MAX_MEMBERS = 4;
 
+const ACADEMIC_YEARS = [
+  '1st Year',
+  '2nd Year',
+  '3rd Year',
+  '4th Year'
+];
+
+// Eligibility based on the highest academic year
+const TIER_ELIGIBILITY = {
+  1: ['Basic'],
+  2: ['Basic', 'Advanced'],
+  3: ['Advanced', 'Hard'],
+  4: ['Hard']
+};
+
+// Create empty team member
 const createEmptyMember = () => ({
   name: '',
   email: '',
-  phone: ''
+  phone: '',
+  academicYear: ''
 });
 
-// ACADEMIC YEAR RECOMMENDATIONS
-const getTierRecommendation = tierName => {
-  const tier = tierName?.trim().toLowerCase();
+// Calculate eligible tiers for the entire team
+const getEligibleTiers = members => {
+  if (
+    !members.length ||
+    members.some(member => !member.academicYear)
+  ) {
+    return [];
+  }
 
-  const recommendations = {
-    basic: {
-      years: '1st Year Students',
-      description:
-        'Recommended for beginners who are building their fundamentals.'
-    },
+  const years = members.map(member =>
+    ACADEMIC_YEARS.indexOf(member.academicYear) + 1
+  );
 
-    advanced: {
-      years: '2nd & 3rd Year Students',
-      description:
-        'Recommended for students with intermediate technical knowledge.'
-    },
+  if (years.some(year => year < 1 || year > 4)) {
+    return [];
+  }
 
-    hard: {
-      years: '4th Year Students',
-      description:
-        'Recommended for students with advanced technical knowledge and experience.'
-    }
+  const highestYear = Math.max(...years);
+
+  return TIER_ELIGIBILITY[highestYear] || [];
+};
+
+// Display Advanced as Medium without changing backend tier name
+const getDisplayTierName = tierName => {
+  return tierName === 'Advanced' ? 'Medium' : tierName;
+};
+
+// Tier descriptions
+const getTierDescription = tierName => {
+  const descriptions = {
+    Basic: 'Beginner level',
+    Advanced: 'Intermediate level',
+    Hard: 'Advanced level'
   };
 
-  return recommendations[tier] || null;
+  return descriptions[tierName] || '';
 };
 
 export default function TeamRegistration() {
@@ -115,15 +143,28 @@ export default function TeamRegistration() {
   };
 
   // UPDATE TEAM MEMBER
+  // Recalculate eligibility whenever a member changes.
   const updateMember = (index, field, value) => {
-    setForm(previous => ({
-      ...previous,
-      members: previous.members.map((member, i) =>
-        i === index
-          ? { ...member, [field]: value }
-          : member
-      )
-    }));
+    setForm(previous => {
+      const updatedMembers = previous.members.map(
+        (member, i) =>
+          i === index
+            ? { ...member, [field]: value }
+            : member
+      );
+
+      const eligibleTiers = getEligibleTiers(
+        updatedMembers
+      );
+
+      return {
+        ...previous,
+        members: updatedMembers,
+        tier: eligibleTiers.includes(previous.tier)
+          ? previous.tier
+          : ''
+      };
+    });
   };
 
   // ADD TEAM MEMBER
@@ -153,14 +194,38 @@ export default function TeamRegistration() {
         return previous;
       }
 
+      const updatedMembers = previous.members.filter(
+        (_, i) => i !== index
+      );
+
+      const eligibleTiers = getEligibleTiers(
+        updatedMembers
+      );
+
       return {
         ...previous,
-        members: previous.members.filter(
-          (_, i) => i !== index
-        )
+        members: updatedMembers,
+        tier: eligibleTiers.includes(previous.tier)
+          ? previous.tier
+          : ''
       };
     });
   };
+
+  // AUTOMATIC TEAM ELIGIBILITY
+  const eligibleTiers = getEligibleTiers(form.members);
+
+  const allYearsSelected = form.members.every(
+    member => member.academicYear
+  );
+
+  const highestAcademicYear = allYearsSelected
+    ? Math.max(
+        ...form.members.map(member =>
+          ACADEMIC_YEARS.indexOf(member.academicYear) + 1
+        )
+      )
+    : null;
 
   // SELECTED TIER AND TOTAL PRICE
   const selectedTier = tiers.find(
@@ -195,8 +260,23 @@ export default function TeamRegistration() {
       return 'A team must have between 3 and 4 members.';
     }
 
+    // Academic year validation
+    if (
+      form.members.some(
+        member =>
+          !ACADEMIC_YEARS.includes(member.academicYear)
+      )
+    ) {
+      return 'Please select the academic year for every team member.';
+    }
+
+    // Tier eligibility validation
     if (!form.tier || !selectedTier) {
-      return 'Please select an available hackathon tier.';
+      return 'Please select an available competition tier.';
+    }
+
+    if (!eligibleTiers.includes(form.tier)) {
+      return 'Your team is not eligible for the selected tier.';
     }
 
     if (
@@ -287,14 +367,16 @@ export default function TeamRegistration() {
         teamName: form.teamName.trim(),
         collegeName: form.collegeName.trim(),
         tier: form.tier,
+
         members: form.members.map(member => ({
           name: member.name.trim(),
           email: member.email.trim().toLowerCase(),
-          phone: member.phone.trim()
+          phone: member.phone.trim(),
+          academicYear: member.academicYear
         }))
       };
 
-      // BACKEND CALCULATES THE ACTUAL TOTAL AMOUNT
+      // Backend calculates the actual registration amount.
       const response = await apiRequest('/registrations', {
         method: 'POST',
         body: JSON.stringify(registrationData)
@@ -392,7 +474,7 @@ export default function TeamRegistration() {
               value={form.collegeName}
               onChange={updateField}
               placeholder="Enter your college name"
-              maxLength={120}
+              maxLength={150}
               required
               disabled={submitting}
             />
@@ -456,7 +538,7 @@ export default function TeamRegistration() {
                     )
                   }
                   placeholder="Enter member name"
-                  maxLength={80}
+                  maxLength={100}
                   required
                   disabled={submitting}
                 />
@@ -503,6 +585,37 @@ export default function TeamRegistration() {
                   disabled={submitting}
                 />
 
+                {/* ACADEMIC YEAR */}
+
+                <label htmlFor={`member-year-${index}`}>
+                  Academic Year
+                </label>
+
+                <select
+                  id={`member-year-${index}`}
+                  value={member.academicYear}
+                  onChange={event =>
+                    updateMember(
+                      index,
+                      'academicYear',
+                      event.target.value
+                    )
+                  }
+                  required
+                  disabled={submitting}
+                >
+                  <option value="">
+                    Select Academic Year
+                  </option>
+
+                  {ACADEMIC_YEARS.map(year => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+
+                </select>
+
               </div>
 
             ))}
@@ -526,111 +639,136 @@ export default function TeamRegistration() {
 
           <div className="form-section">
 
-            <h2>Select Your Tier</h2>
+            <h2>Select Competition Tier</h2>
 
             <p className="tier-guidance">
-              Choose a challenge level based on your
-              academic year and technical experience.
-              The recommendations below are guidelines.
+              Your team's eligible tier is automatically
+              determined by the highest academic year
+              among all members.
             </p>
 
-            {tiers.length === 0 ? (
+            {!allYearsSelected ? (
 
-              <p>
-                No tiers are currently available.
-                Please contact the organizers.
+              <p className="eligibility-message">
+                Select the academic year of every team member
+                to determine eligible tiers.
               </p>
 
             ) : (
 
-              <div className="tier-selection-grid">
+              <>
+                <div className="tier-selection-grid">
 
-                {tiers.map(tier => {
+                  {tiers.map(tier => {
 
-                  const tierId =
-                    tier._id || tier.id || tier.name;
+                    const tierId =
+                      tier._id || tier.id || tier.name;
 
-                  const tierName =
-                    tier.name || tier.tier;
+                    const tierName =
+                      tier.name || tier.tier;
 
-                  const tierPrice = Number(
-                    tier.price ?? tier.amount ?? 0
-                  );
+                    const isEligible =
+                      eligibleTiers.includes(tierName);
 
-                  const recommendation =
-                    getTierRecommendation(tierName);
+                    const isSelected =
+                      form.tier === tierName;
 
-                  return (
+                    const displayName =
+                      getDisplayTierName(tierName);
 
-                    <label
-                      key={tierId}
-                      className={`tier-option ${
-                        form.tier === tierName
-                          ? 'selected'
-                          : ''
-                      }`}
-                    >
+                    const description =
+                      getTierDescription(tierName);
 
-                      <input
-                        type="radio"
-                        name="tier"
-                        value={tierName}
-                        checked={form.tier === tierName}
-                        onChange={updateField}
-                        required
-                        disabled={submitting}
-                      />
+                    const tierPrice = Number(
+                      tier.price ?? tier.amount ?? 0
+                    );
 
-                      <span className="tier-option-name">
-                        {tierName}
-                      </span>
+                    return (
 
-                      <strong>
-                        ₹
-                        {Number.isFinite(tierPrice)
-                          ? tierPrice.toLocaleString('en-IN')
-                          : 'Price unavailable'}
-                      </strong>
+                      <label
+                        key={tierId}
+                        className={`eligibility-tier-card ${
+                          isSelected ? 'selected' : ''
+                        } ${
+                          isEligible ? 'eligible' : 'restricted'
+                        }`}
+                      >
 
-                      {/* ACADEMIC YEAR RECOMMENDATION */}
+                        <input
+                          type="radio"
+                          name="tier"
+                          value={tierName}
+                          checked={isSelected}
+                          onChange={updateField}
+                          disabled={!isEligible || submitting}
+                        />
 
-                      {recommendation && (
-
-                        <div className="tier-recommendation">
-
-                          <span className="tier-recommendation-label">
-                            RECOMMENDED FOR
-                          </span>
-
-                          <span className="tier-recommendation-years">
-                            {recommendation.years}
-                          </span>
-
-                          <span className="tier-recommendation-description">
-                            {recommendation.description}
-                          </span>
-
-                        </div>
-
-                      )}
-
-                      {tier.description && (
-                        <span className="tier-option-description">
-                          {tier.description}
+                        <span className="tier-status-dot">
+                          {isEligible ? '●' : '🔒'}
                         </span>
-                      )}
 
-                      <span className="tier-price-note">
-                        Per participant
-                      </span>
+                        <span className="tier-card-details">
 
-                    </label>
+                          <strong>
+                            {displayName}
+                          </strong>
 
-                  );
+                          <small>
+                            {description}
+                          </small>
 
-                })}
+                          <small>
+                            ₹
+                            {Number.isFinite(tierPrice)
+                              ? tierPrice.toLocaleString('en-IN')
+                              : 'Price unavailable'}
+                            {' '}per participant
+                          </small>
 
-              </div>
+                        </span>
+
+                        <span className="tier-card-status">
+                          {isEligible
+                            ? 'Eligible'
+                            : 'Restricted'}
+                        </span>
+
+                      </label>
+
+                    );
+
+                  })}
+
+                </div>
+
+                {/* AUTOMATIC ELIGIBILITY SUMMARY */}
+
+                <div className="eligibility-summary">
+
+                  <span>
+                    Automatically determined eligibility
+                  </span>
+
+                  <strong>
+                    {eligibleTiers
+                      .map(getDisplayTierName)
+                      .join(' / ')}
+                  </strong>
+
+                  <small>
+                    Highest academic year: {highestAcademicYear}
+                    {highestAcademicYear === 1
+                      ? 'st'
+                      : highestAcademicYear === 2
+                        ? 'nd'
+                        : highestAcademicYear === 3
+                          ? 'rd'
+                          : 'th'} Year
+                  </small>
+
+                </div>
+
+              </>
 
             )}
 
@@ -671,7 +809,12 @@ export default function TeamRegistration() {
 
           <button
             type="submit"
-            disabled={submitting || tiers.length === 0}
+            disabled={
+              submitting ||
+              tiers.length === 0 ||
+              !allYearsSelected ||
+              !eligibleTiers.includes(form.tier)
+            }
           >
             {submitting
               ? 'Submitting Registration...'
