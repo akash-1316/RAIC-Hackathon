@@ -35,7 +35,7 @@ function Tiers() {
           </h1>
 
           <p>
-            Three distinct challenge levels. One 24-hour
+            Three distinct challenge levels. One 25-hour
             innovation experience. Find the level that
             matches your team's technical readiness.
           </p>
@@ -184,7 +184,7 @@ function Tiers() {
             </h2>
 
             <p>
-              Choose your level and get ready for 24 hours
+              Choose your level and get ready for 25 hours
               of innovation.
             </p>
           </div>
