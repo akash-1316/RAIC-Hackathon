@@ -89,7 +89,7 @@ export default function Contact() {
               <div>
                 <h3>Email</h3>
                 <p>
-                  Official contact email will be announced.
+                  raicraghuenggcollege@gmail.com
                 </p>
               </div>
             </article>
@@ -100,7 +100,7 @@ export default function Contact() {
               <div>
                 <h3>Venue</h3>
                 <p>
-                  Event venue details will be announced.
+                  RAGHU ENGINEERING COLLEGE(REC)
                 </p>
               </div>
             </article>
