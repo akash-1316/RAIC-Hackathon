@@ -42,7 +42,7 @@ export default function Countdown() {
         <div className="countdown-top">
           <span className="countdown-indicator" />
           THE COUNTDOWN IS ON
-          <span className="countdown-24">24H</span>
+          <span className="countdown-24">25H</span>
         </div>
 
         <h2>
