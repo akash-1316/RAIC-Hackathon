@@ -41,7 +41,7 @@ export default function ParticipantDashboard() {
 
         if (!active) return;
 
-        // Keep the dashboard accessible even after payment approval.
+        // Keep dashboard accessible after payment approval.
         setData(result);
         setError('');
 
@@ -226,6 +226,7 @@ export default function ParticipantDashboard() {
         <div className="dashboard-heading">
           <div>
             <h1>Participant Dashboard</h1>
+
             <p>
               Welcome back, {user?.name || 'Participant'}.
             </p>
@@ -324,7 +325,7 @@ export default function ParticipantDashboard() {
 
         </div>
 
-        {/* APPROVED PAYMENT */}
+        {/* PAYMENT STATUS INFORMATION */}
 
         {paymentStatus === 'approved' ? (
 
@@ -338,20 +339,6 @@ export default function ParticipantDashboard() {
             <p>
               Your team registration payment is complete.
             </p>
-
-            {latestPayment?._id && (
-              <button
-                type="button"
-                disabled={receiptLoading}
-                onClick={() =>
-                  handleReceiptDownload(latestPayment._id)
-                }
-              >
-                {receiptLoading
-                  ? 'Preparing Receipt...'
-                  : 'Download Receipt'}
-              </button>
-            )}
           </div>
 
         ) : paymentStatus === 'pending' ? (
@@ -411,7 +398,7 @@ export default function ParticipantDashboard() {
 
         )}
 
-        {/* PAYMENT HISTORY */}
+        {/* SINGLE RECEIPT DOWNLOAD LOCATION */}
 
         {payments.length > 0 && (
           <div className="dashboard-card">
@@ -442,6 +429,8 @@ export default function ParticipantDashboard() {
                     {payment.remarks}
                   </p>
                 )}
+
+                {/* Receipt available only for approved payments */}
 
                 {payment.status === 'approved' && (
                   <button
