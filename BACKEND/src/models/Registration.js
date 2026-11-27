@@ -21,6 +21,12 @@ const memberSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true
+    },
+
+    academicYear: {
+      type: String,
+      enum: ['1st Year', '2nd Year', '3rd Year', '4th Year'],
+      required: true
     }
   },
   { _id: false }
@@ -85,7 +91,6 @@ const schema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Generate registration ID automatically.
 schema.pre('validate', function () {
   if (!this.registrationId) {
     this.registrationId =
@@ -96,8 +101,6 @@ schema.pre('validate', function () {
   }
 });
 
-// One active registration per participant.
-// Cancelled registrations remain in history.
 schema.index(
   { userId: 1 },
   {
