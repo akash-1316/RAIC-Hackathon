@@ -35,7 +35,7 @@ export default function SilverJubilee() {
           <p>
             As part of this milestone celebration, we bring together
             creativity, technology, and problem-solving through a
-            24-hour hackathon in collaboration with RAIC.
+            25-hour hackathon in collaboration with RAIC.
           </p>
 
           <div className="jubilee-footer">
