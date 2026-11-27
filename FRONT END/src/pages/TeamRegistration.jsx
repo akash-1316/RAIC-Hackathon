@@ -12,6 +12,33 @@ const createEmptyMember = () => ({
   phone: ''
 });
 
+// ACADEMIC YEAR RECOMMENDATIONS
+const getTierRecommendation = tierName => {
+  const tier = tierName?.trim().toLowerCase();
+
+  const recommendations = {
+    basic: {
+      years: '1st Year Students',
+      description:
+        'Recommended for beginners who are building their fundamentals.'
+    },
+
+    advanced: {
+      years: '2nd & 3rd Year Students',
+      description:
+        'Recommended for students with intermediate technical knowledge.'
+    },
+
+    hard: {
+      years: '4th Year Students',
+      description:
+        'Recommended for students with advanced technical knowledge and experience.'
+    }
+  };
+
+  return recommendations[tier] || null;
+};
+
 export default function TeamRegistration() {
   const navigate = useNavigate();
 
@@ -267,7 +294,7 @@ export default function TeamRegistration() {
         }))
       };
 
-      // Backend calculates the actual total amount.
+      // BACKEND CALCULATES THE ACTUAL TOTAL AMOUNT
       const response = await apiRequest('/registrations', {
         method: 'POST',
         body: JSON.stringify(registrationData)
@@ -279,6 +306,7 @@ export default function TeamRegistration() {
       );
 
       navigate('/participant', { replace: true });
+
     } catch (err) {
       console.error(
         '[Registration] Submission failed:',
@@ -293,11 +321,13 @@ export default function TeamRegistration() {
         top: 0,
         behavior: 'smooth'
       });
+
     } finally {
       setSubmitting(false);
     }
   };
 
+  // LOADING STATE
   if (loadingTiers) {
     return (
       <main className="page-shell">
@@ -308,6 +338,7 @@ export default function TeamRegistration() {
 
   return (
     <main className="registration-page">
+
       <section className="registration-container">
 
         <h1>Team Registration</h1>
@@ -333,6 +364,7 @@ export default function TeamRegistration() {
           {/* TEAM INFORMATION */}
 
           <div className="form-section">
+
             <h2>Team Information</h2>
 
             <label htmlFor="teamName">
@@ -364,11 +396,13 @@ export default function TeamRegistration() {
               required
               disabled={submitting}
             />
+
           </div>
 
           {/* TEAM MEMBERS */}
 
           <div className="form-section">
+
             <h2>Team Members</h2>
 
             <p>
@@ -377,11 +411,14 @@ export default function TeamRegistration() {
             </p>
 
             {form.members.map((member, index) => (
+
               <div
                 className="member-form-card"
                 key={index}
               >
+
                 <div className="member-form-heading">
+
                   <h3>
                     {index === 0
                       ? 'Team Leader'
@@ -400,6 +437,7 @@ export default function TeamRegistration() {
                       Remove
                     </button>
                   )}
+
                 </div>
 
                 <label htmlFor={`member-name-${index}`}>
@@ -464,10 +502,13 @@ export default function TeamRegistration() {
                   required
                   disabled={submitting}
                 />
+
               </div>
+
             ))}
 
             {form.members.length < MAX_MEMBERS && (
+
               <button
                 type="button"
                 className="secondary-button"
@@ -476,22 +517,36 @@ export default function TeamRegistration() {
               >
                 + Add Team Member
               </button>
+
             )}
+
           </div>
 
           {/* TIER SELECTION */}
 
           <div className="form-section">
+
             <h2>Select Your Tier</h2>
 
+            <p className="tier-guidance">
+              Choose a challenge level based on your
+              academic year and technical experience.
+              The recommendations below are guidelines.
+            </p>
+
             {tiers.length === 0 ? (
+
               <p>
                 No tiers are currently available.
                 Please contact the organizers.
               </p>
+
             ) : (
+
               <div className="tier-selection-grid">
+
                 {tiers.map(tier => {
+
                   const tierId =
                     tier._id || tier.id || tier.name;
 
@@ -502,7 +557,11 @@ export default function TeamRegistration() {
                     tier.price ?? tier.amount ?? 0
                   );
 
+                  const recommendation =
+                    getTierRecommendation(tierName);
+
                   return (
+
                     <label
                       key={tierId}
                       className={`tier-option ${
@@ -511,6 +570,7 @@ export default function TeamRegistration() {
                           : ''
                       }`}
                     >
+
                       <input
                         type="radio"
                         name="tier"
@@ -532,25 +592,57 @@ export default function TeamRegistration() {
                           : 'Price unavailable'}
                       </strong>
 
+                      {/* ACADEMIC YEAR RECOMMENDATION */}
+
+                      {recommendation && (
+
+                        <div className="tier-recommendation">
+
+                          <span className="tier-recommendation-label">
+                            RECOMMENDED FOR
+                          </span>
+
+                          <span className="tier-recommendation-years">
+                            {recommendation.years}
+                          </span>
+
+                          <span className="tier-recommendation-description">
+                            {recommendation.description}
+                          </span>
+
+                        </div>
+
+                      )}
+
                       {tier.description && (
-                        <span>{tier.description}</span>
+                        <span className="tier-option-description">
+                          {tier.description}
+                        </span>
                       )}
 
                       <span className="tier-price-note">
                         Per participant
                       </span>
+
                     </label>
+
                   );
+
                 })}
+
               </div>
+
             )}
 
             {/* TOTAL REGISTRATION FEE */}
 
             {form.tier && selectedTier && (
+
               <div className="registration-total">
+
                 <p>
                   Price per participant:
+
                   <strong>
                     ₹{perHeadPrice.toLocaleString('en-IN')}
                   </strong>
@@ -558,15 +650,21 @@ export default function TeamRegistration() {
 
                 <p>
                   Number of participants:
-                  <strong>{form.members.length}</strong>
+
+                  <strong>
+                    {form.members.length}
+                  </strong>
                 </p>
 
                 <h3>
                   Total Registration Fee:
                   {' '}₹{totalAmount.toLocaleString('en-IN')}
                 </h3>
+
               </div>
+
             )}
+
           </div>
 
           {/* SUBMIT */}
@@ -581,7 +679,9 @@ export default function TeamRegistration() {
           </button>
 
         </form>
+
       </section>
+
     </main>
   );
 }
