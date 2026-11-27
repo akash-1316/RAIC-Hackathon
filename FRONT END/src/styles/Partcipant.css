@@ -935,6 +935,92 @@
     font-size: 13px;
   }
 
+/* =====================================
+   TIER ACADEMIC YEAR RECOMMENDATIONS
+===================================== */
+
+.tier-guidance {
+  color: #aaa5b2;
+  font-size: 13px;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.tier-recommendation {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+
+  width: 100%;
+  margin: 14px 0;
+  padding: 14px;
+
+  background: rgba(169, 138, 203, 0.08);
+  border: 1px solid rgba(169, 138, 203, 0.25);
+  border-radius: 8px;
+
+  transition:
+    background .2s ease,
+    border-color .2s ease;
+}
+
+.tier-recommendation-label {
+  color: #a98acb;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+}
+
+.tier-recommendation-years {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.tier-recommendation-description {
+  color: #aaa5b2;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.tier-option.selected .tier-recommendation {
+  background: rgba(169, 138, 203, 0.14);
+  border-color: #a98acb;
+}
+
+.tier-option-description {
+  color: #aaa5b2;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.tier-price-note {
+  color: #999;
+  font-size: 11px;
+  margin-top: 5px;
+}
+
+/* MOBILE RESPONSIVENESS */
+
+@media (max-width: 600px) {
+  .tier-guidance {
+    font-size: 12px;
+  }
+
+  .tier-recommendation {
+    padding: 12px;
+    margin: 11px 0;
+  }
+
+  .tier-recommendation-years {
+    font-size: 13px;
+  }
+
+  .tier-recommendation-description {
+    font-size: 10px;
+  }
+}
+
   .registration-total h3 {
     font-size: 18px;
   }
