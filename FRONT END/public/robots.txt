@@ -1,0 +1,5 @@
+
+User-agent: *
+Allow: /
+
+Sitemap: https://ignite-2k26-two.vercel.app/sitemap.xml
