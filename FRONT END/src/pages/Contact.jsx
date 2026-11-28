@@ -91,6 +91,7 @@ export default function Contact() {
                 <p>
                   raicraghuenggcollege@gmail.com
                 </p>
+                <br/>
                 <h3>Phone</h3>
                 <p>
                   +91 9177426430
