@@ -1,5 +1,6 @@
 
 import {
+  Fragment,
   useCallback,
   useEffect,
   useState
@@ -105,6 +106,9 @@ export default function App() {
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [mobile, setMobile] = useState(false);
+
+  // NEW: Tracks the expanded registration row.
+  const [expandedTeam, setExpandedTeam] = useState(null);
 
   const [unreadCount, setUnreadCount] = useState(0);
   const [selectedEnquiry, setSelectedEnquiry] = useState(null);
@@ -489,6 +493,7 @@ export default function App() {
               setStatus('all');
               setTierFilter('all');
               setSelectedEnquiry(null);
+              setExpandedTeam(null);
               setMobile(false);
             }}
           >
@@ -548,7 +553,7 @@ export default function App() {
           <>
             <div className="stats">
               {[
-                ['Participants', data.stats?.participants],
+                ['Website visitors', data.stats?.participants],
                 ['All registrations', data.stats?.totalRegistrations],
                 ['Active registrations', data.stats?.activeRegistrations],
                 ['Cancelled registrations', data.stats?.cancelledRegistrations],
@@ -673,6 +678,11 @@ export default function App() {
                             College: x.collegeName,
                             Participant: x.userId?.name,
                             Email: x.userId?.email,
+                            'Team Members': (x.members || [])
+                              .map((member, index) =>
+                                `${index + 1}. ${member.name || ''} | ${member.email || ''} | ${member.phone || ''}`
+                              )
+                              .join(' ; '),
                             Tier: x.tier,
                             Amount: x.amount,
                             Status: x.status,
@@ -711,6 +721,7 @@ export default function App() {
                       <th>Registration</th>
                       <th>Team / College</th>
                       <th>Participant</th>
+                      <th>Team Members</th>
                       <th>Tier</th>
                       <th>Fee</th>
                       <th>Registration</th>
@@ -719,34 +730,148 @@ export default function App() {
                   </thead>
 
                   <tbody>
-                    {(data.items || []).map(x => (
-                      <tr key={x._id}>
-                        <td>
-                          {x.registrationId}
-                          <small>{date(x.createdAt)}</small>
-                        </td>
-                        <td>
-                          {x.teamName}
-                          <small>{x.collegeName}</small>
-                        </td>
-                        <td>
-                          {x.userId?.name}
-                          <small>{x.userId?.email}</small>
-                        </td>
-                        <td>{x.tier}</td>
-                        <td>{money(x.amount)}</td>
-                        <td>
-                          <span className={`pill ${x.status}`}>
-                            {x.status}
-                          </span>
-                        </td>
-                        <td>
-                          <span className={`pill ${x.latestPayment?.status || 'neutral'}`}>
-                            {x.latestPayment?.status || 'not submitted'}
-                          </span>
+                    {(data.items || []).map(x => {
+                      const members = Array.isArray(x.members)
+                        ? x.members
+                        : [];
+
+                      const isExpanded = expandedTeam === x._id;
+                      const leaderEmail = x.userId?.email?.toLowerCase();
+
+                      return (
+                        <Fragment key={x._id}>
+                          <tr>
+                            <td>
+                              {x.registrationId}
+                              <small>{date(x.createdAt)}</small>
+                            </td>
+
+                            <td>
+                              {x.teamName}
+                              <small>{x.collegeName}</small>
+                            </td>
+
+                            <td>
+                              {x.userId?.name}
+                              <small>{x.userId?.email}</small>
+                            </td>
+
+                            <td>
+                              <button
+                                type="button"
+                                className="team-members-toggle"
+                                onClick={() =>
+                                  setExpandedTeam(
+                                    isExpanded ? null : x._id
+                                  )
+                                }
+                                aria-expanded={isExpanded}
+                              >
+                                <Users size={15} />
+                                {members.length} Members
+                                <span>{isExpanded ? '−' : '+'}</span>
+                              </button>
+                            </td>
+
+                            <td>{x.tier}</td>
+
+                            <td>{money(x.amount)}</td>
+
+                            <td>
+                              <span className={`pill ${x.status}`}>
+                                {x.status}
+                              </span>
+                            </td>
+
+                            <td>
+                              <span className={`pill ${x.latestPayment?.status || 'neutral'}`}>
+                                {x.latestPayment?.status || 'not submitted'}
+                              </span>
+                            </td>
+                          </tr>
+
+                          {isExpanded && (
+                            <tr className="team-members-expanded">
+                              <td colSpan={8}>
+                                <div className="team-members-container">
+
+                                  <div className="team-members-title">
+                                    <div>
+                                      <h3>
+                                        {x.teamName} — Team Members
+                                      </h3>
+                                      <p>
+                                        {members.length} registered members
+                                      </p>
+                                    </div>
+
+                                    <span className="team-tier-label">
+                                      {x.tier}
+                                    </span>
+                                  </div>
+
+                                  {members.length > 0 ? (
+                                    <div className="team-members-grid">
+                                      {members.map((member, index) => {
+                                        const isLeader =
+                                          member.email?.toLowerCase() ===
+                                          leaderEmail;
+
+                                        return (
+                                          <div
+                                            className="team-member-card"
+                                            key={`${x._id}-${index}`}
+                                          >
+                                            <div className="team-member-number">
+                                              {String(index + 1).padStart(2, '0')}
+                                            </div>
+
+                                            <div className="team-member-info">
+                                              <div className="team-member-name">
+                                                <strong>
+                                                  {member.name || 'Name unavailable'}
+                                                </strong>
+
+                                                {isLeader && (
+                                                  <span className="team-leader-label">
+                                                    TEAM LEADER
+                                                  </span>
+                                                )}
+                                              </div>
+
+                                              <span>
+                                                {member.email || 'Email unavailable'}
+                                              </span>
+
+                                              <span>
+                                                {member.phone || 'Phone unavailable'}
+                                              </span>
+                                            </div>
+                                          </div>
+                                        );
+                                      })}
+                                    </div>
+                                  ) : (
+                                    <p className="team-members-empty">
+                                      No member information is included in this registration response.
+                                    </p>
+                                  )}
+
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                        </Fragment>
+                      );
+                    })}
+
+                    {(data.items || []).length === 0 && (
+                      <tr>
+                        <td colSpan={8} className="empty-state">
+                          No registrations found.
                         </td>
                       </tr>
-                    ))}
+                    )}
                   </tbody>
                 </table>
               )}
@@ -772,15 +897,19 @@ export default function App() {
                           {p.registrationId?.registrationId}
                           <small>{p.registrationId?.teamName}</small>
                         </td>
+
                         <td>
                           {p.userId?.name}
                           <small>{p.userId?.email}</small>
                         </td>
+
                         <td>
                           {p.transactionId}
                           <small>{date(p.createdAt)}</small>
                         </td>
+
                         <td>{money(p.amount)}</td>
+
                         <td>
                           <button className="link-button" onClick={() => viewProof(p._id)}>
                             View proof
@@ -792,18 +921,21 @@ export default function App() {
                             </button>
                           )}
                         </td>
+
                         <td>
                           <span className={`pill ${p.status}`}>
                             {p.status}
                           </span>
                           {p.remarks && <small>{p.remarks}</small>}
                         </td>
+
                         <td>
                           {p.status === 'pending' ? (
                             <>
                               <button className="yes" onClick={() => review(p._id, 'approved')}>
                                 <Check size={14} /> Approve
                               </button>
+
                               <button className="no" onClick={() => review(p._id, 'rejected')}>
                                 <X size={14} /> Reject
                               </button>
