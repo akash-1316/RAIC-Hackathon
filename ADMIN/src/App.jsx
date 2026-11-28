@@ -672,24 +672,44 @@ export default function App() {
                   onClick={() => {
                     const rows = (data.items || []).map(x =>
                       page === 'registrations'
-                        ? {
-                            'Registration ID': x.registrationId,
-                            Team: x.teamName,
-                            College: x.collegeName,
-                            Participant: x.userId?.name,
-                            Email: x.userId?.email,
-                            'Team Members': (x.members || [])
-                              .map((member, index) =>
-                                `${index + 1}. ${member.name || ''} | ${member.email || ''} | ${member.phone || ''}`
+                        ? (() => {
+                            // Some API responses wrap the registration inside registrationId.
+                            // Normalize both response shapes before exporting.
+                            const registration =
+                              x.registrationId &&
+                              typeof x.registrationId === 'object' &&
+                              !Array.isArray(x.registrationId)
+                                ? x.registrationId
+                                : x;
+
+                            return {
+                              'Registration ID':
+                                typeof registration.registrationId === 'object'
+                                  ? registration.registrationId?.registrationId || ''
+                                  : registration.registrationId || '',
+                              Team: registration.teamName || '',
+                              College: registration.collegeName || '',
+                              Participant: registration.userId?.name || '',
+                              Email: registration.userId?.email || '',
+                              'Team Members': (Array.isArray(registration.members)
+                                ? registration.members
+                                : []
                               )
-                              .join(' ; '),
-                            Tier: x.tier,
-                            Amount: x.amount,
-                            Status: x.status,
-                            'Payment Status':
-                              x.latestPayment?.status || 'not_submitted',
-                            Created: date(x.createdAt)
-                          }
+                                .map((member, index) =>
+                                  `${index + 1}. ${member.name || ''} | ${member.email || ''} | ${member.phone || ''}`
+                                )
+                                .join(' ; '),
+                              Tier:
+                                typeof registration.tier === 'object'
+                                  ? registration.tier?.name || ''
+                                  : registration.tier || '',
+                              Amount: registration.amount ?? '',
+                              Status: registration.status || '',
+                              'Payment Status':
+                                registration.latestPayment?.status || 'not_submitted',
+                              Created: date(registration.createdAt)
+                            };
+                          })()
                         : {
                             'Transaction ID': x.transactionId,
                             'Registration ID':
@@ -731,29 +751,41 @@ export default function App() {
 
                   <tbody>
                     {(data.items || []).map(x => {
-                      const members = Array.isArray(x.members)
-                        ? x.members
+                      // The API can return either a registration directly or
+                      // a wrapper whose registrationId contains the registration.
+                      const registration =
+                        x.registrationId &&
+                        typeof x.registrationId === 'object' &&
+                        !Array.isArray(x.registrationId)
+                          ? x.registrationId
+                          : x;
+
+                      const members = Array.isArray(registration.members)
+                        ? registration.members
                         : [];
 
-                      const isExpanded = expandedTeam === x._id;
-                      const leaderEmail = x.userId?.email?.toLowerCase();
+                      const rowId = registration._id || x._id;
+                      const isExpanded = expandedTeam === rowId;
+                      const leaderEmail = registration.userId?.email?.toLowerCase();
 
                       return (
-                        <Fragment key={x._id}>
+                        <Fragment key={rowId}>
                           <tr>
                             <td>
-                              {x.registrationId}
-                              <small>{date(x.createdAt)}</small>
+                              {typeof registration.registrationId === 'object'
+                                ? registration.registrationId?.registrationId
+                                : registration.registrationId}
+                              <small>{date(registration.createdAt)}</small>
                             </td>
 
                             <td>
-                              {x.teamName}
-                              <small>{x.collegeName}</small>
+                              {registration.teamName}
+                              <small>{registration.collegeName}</small>
                             </td>
 
                             <td>
-                              {x.userId?.name}
-                              <small>{x.userId?.email}</small>
+                              {registration.userId?.name}
+                              <small>{registration.userId?.email}</small>
                             </td>
 
                             <td>
@@ -762,7 +794,7 @@ export default function App() {
                                 className="team-members-toggle"
                                 onClick={() =>
                                   setExpandedTeam(
-                                    isExpanded ? null : x._id
+                                    isExpanded ? null : rowId
                                   )
                                 }
                                 aria-expanded={isExpanded}
@@ -773,19 +805,19 @@ export default function App() {
                               </button>
                             </td>
 
-                            <td>{x.tier}</td>
+                            <td>{typeof registration.tier === 'object' ? registration.tier?.name : registration.tier}</td>
 
-                            <td>{money(x.amount)}</td>
+                            <td>{money(registration.amount)}</td>
 
                             <td>
-                              <span className={`pill ${x.status}`}>
-                                {x.status}
+                              <span className={`pill ${registration.status}`}>
+                                {registration.status}
                               </span>
                             </td>
 
                             <td>
-                              <span className={`pill ${x.latestPayment?.status || 'neutral'}`}>
-                                {x.latestPayment?.status || 'not submitted'}
+                              <span className={`pill ${registration.latestPayment?.status || 'neutral'}`}>
+                                {registration.latestPayment?.status || 'not submitted'}
                               </span>
                             </td>
                           </tr>
@@ -798,7 +830,7 @@ export default function App() {
                                   <div className="team-members-title">
                                     <div>
                                       <h3>
-                                        {x.teamName} — Team Members
+                                        {registration.teamName} — Team Members
                                       </h3>
                                       <p>
                                         {members.length} registered members
@@ -806,7 +838,7 @@ export default function App() {
                                     </div>
 
                                     <span className="team-tier-label">
-                                      {x.tier}
+                                      {typeof registration.tier === 'object' ? registration.tier?.name : registration.tier}
                                     </span>
                                   </div>
 
@@ -820,7 +852,7 @@ export default function App() {
                                         return (
                                           <div
                                             className="team-member-card"
-                                            key={`${x._id}-${index}`}
+                                            key={`${rowId}-${index}`}
                                           >
                                             <div className="team-member-number">
                                               {String(index + 1).padStart(2, '0')}
